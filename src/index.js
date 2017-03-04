@@ -11,10 +11,12 @@ import { extractGroupFields } from './event/group';
 function emit(type: string, fields: Array, { client }: Object) {
   const currentClient = client();
 
-  if (typeof currentClient[type] === 'function') {
+  if (currentClient && typeof currentClient[type] === 'function') {
     currentClient[type](...fields);
   } else {
-    warn(`The analytics client you provided doesn't support ${ type } events.`);
+    warn('The analytics client you provided doesn\'t support ' +
+         type +
+         ' events. Make sure that the anaytics.js script is loaded.');
   }
 }
 
