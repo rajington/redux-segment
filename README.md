@@ -215,7 +215,7 @@ const tracker = createTracker(customMapper);
 
 
 
-**2. Copy the segment snippet into the header of your site**
+**3. Copy the segment snippet into the header of your site**
 
 ```html
 <head>
@@ -238,7 +238,7 @@ const tracker = createTracker(customMapper);
 </head>
 ```
 
-**3. You're done! You can now start specifying events at your heart's
+**4. You're done! You can now start specifying events at your heart's
 content.**
 
 ## Usage

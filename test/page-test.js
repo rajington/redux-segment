@@ -3,10 +3,9 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { compose, createStore, combineReducers, applyMiddleware } from 'redux';
 import { Provider } from 'react-redux';
-import { Router, Route, IndexRoute, Link, useRouterHistory } from 'react-router';
-import { createHashHistory } from 'history';
-import { syncReduxAndRouter, routeReducer } from 'redux-simple-router';
-import { ReduxRouter, routerStateReducer, reduxReactRouter } from 'redux-router';
+import { ConnectedRouter, routerReducer, routerMiddleware, push } from 'react-router-redux';
+import { Route } from 'react-router-dom';
+import { createMemoryHistory } from 'history';
 import createAnalyticsStub from './helpers/segment-stub';
 import { warn } from './helpers/console-stub';
 import { createTracker, EventTypes } from '../src/index';
@@ -14,112 +13,46 @@ import { root } from './helpers/env-setup';
 
 
 test('Page - router support', t => {
-  t.test('redux-simple-router', st => {
+  t.test('react-router-redux', st => {
     st.plan(2);
-
 
     root.analytics = createAnalyticsStub();
     const node = root.document.getElementById('app');
 
+    const history = createMemoryHistory();
+    const middleware = routerMiddleware(history);
     const tracker = createTracker();
-    const reducer = combineReducers({
-      routing: routeReducer,
-    });
-    const store = compose(
-      applyMiddleware(tracker)
-    )(createStore)(reducer);
-    const Component = () =>
-      <div>
-        <h1>Hello!</h1>
-        <ul>
-          <li><Link to="/foo">Foo</Link></li>
-          <li><Link to="/bar">Bar</Link></li>
-        </ul>
-      </div>;
 
-    const history = useRouterHistory(createHashHistory)({ queryKey: false });
-    syncReduxAndRouter(history, store);
+    const Component = () => <h1>Hello!</h1>
 
+    const store = createStore(
+      combineReducers({
+        router: routerReducer
+      }),
+      applyMiddleware(middleware, tracker)
+    )
 
     ReactDOM.render(
-      <Provider store={store}>
-        <div>
-          <Router history={history}>
-            <Route path="/" component={Component}>
-              <IndexRoute component={Component}/>
-              <Route path="foo" component={Component}/>
-              <Route path="bar" component={Component}/>
-            </Route>
-          </Router>
-        </div>
+      <Provider store={ store }>
+        <ConnectedRouter history={ history }>
+          <div>
+            <Route exact path="/" component={ Component } />
+            <Route path="/foo" component={ Component } />
+            <Route path="/bar" component={ Component } />
+          </div>
+        </ConnectedRouter>
       </Provider>,
       node
     );
 
-
     const initialEvent = root.analytics[0] && root.analytics[0][0];
     st.equal(initialEvent, 'page', 'triggers page event on load');
 
-    const fooLink = node.querySelector('a[href$="foo"]');
-    // Wait for route change to propagate to store
-    store.subscribe(() => {
-      const fooLinkEvent = root.analytics[1] && root.analytics[1][0];
-      st.equal(fooLinkEvent, 'page', 'triggers page event on navigation');
-      root.analytics = null;
-    });
-    fooLink.click();
-    ReactDOM.unmountComponentAtNode(node);
-  });
+    store.dispatch(push('/foo'));
 
-  t.test('redux-router', st => {
-    st.plan(2);
+    const fooPushEvent = root.analytics[1] && root.analytics[1][0];
+    st.equal(fooPushEvent, 'page', 'triggers page event on navigation');
 
-
-    root.analytics = createAnalyticsStub();
-    const node = document.createElement('div');
-    const tracker = createTracker();
-    const reducer = combineReducers({
-      router: routerStateReducer,
-    });
-    const history = useRouterHistory(createHashHistory)({ queryKey: false });
-    const store = compose(
-      reduxReactRouter({ history }),
-      applyMiddleware(tracker)
-    )(createStore)(reducer);
-    const Component = () =>
-      <div>
-        <h1>Hello!</h1>
-        <ul>
-          <li><Link to="/foo">Foo</Link></li>
-          <li><Link to="/bar">Bar</Link></li>
-        </ul>
-      </div>;
-    ReactDOM.render(
-      <Provider store={store}>
-        <div>
-          <ReduxRouter history={history}>
-            <Route path="/" component={Component}>
-              <IndexRoute component={Component}/>
-              <Route path="foo" component={Component}/>
-              <Route path="bar" component={Component}/>
-            </Route>
-          </ReduxRouter>
-        </div>
-      </Provider>,
-      node
-    );
-
-
-    const initialEvent = root.analytics[0] && root.analytics[0][0];
-    st.equal(initialEvent, 'page', 'triggers page event on load');
-
-    const fooLink = node.querySelector('a[href$="foo"]');
-    fooLink.click();
-    const fooLinkEvent = root.analytics[1] && root.analytics[1][0];
-    st.equal(fooLinkEvent, 'page', 'triggers page event on navigation');
-
-
-    root.analytics = null;
     ReactDOM.unmountComponentAtNode(node);
   });
 });
