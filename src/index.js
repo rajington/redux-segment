@@ -15,7 +15,7 @@ function emit (type: string, fields: Array, { client }: Object) {
   } else {
     warn('The analytics client you provided doesn\'t support ' +
          type +
-         ' events. Make sure that the anaytics.js script is loaded.')
+         ' events. Make sure that the analytics.js script is loaded.')
   }
 }
 
@@ -27,7 +27,7 @@ function createTracker (customOptions = {}) {
 
   if (!options.client) {
     warn('Could not find an analytics client. Provide a client to' +
-         'createTracker or make sure that the anaytics.js script' +
+         'createTracker or make sure that the analytics.js script' +
          'is loaded and executed before your application code.')
   }
 
@@ -42,7 +42,7 @@ function createMetaReducer (customOptions = {}) {
 
   if (!options.client) {
     warn('Could not find an analytics client. Provide a client to' +
-         'createTracker or make sure that the anaytics.js script' +
+         'createTracker or make sure that the analytics.js script' +
          'is loaded and executed before your application code.')
   }
 
