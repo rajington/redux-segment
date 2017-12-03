@@ -212,8 +212,21 @@ const customMapper = {
 const tracker = createTracker(customMapper);
 ```
 
+_Note: You can skip the
+[default mapping](https://github.com/rangle/redux-segment/blob/master/src/event/configuration.js)
+by setting the `skipDefaultMapping` property as `true` in the config object you pass to
+`createTracker(customMapper)`._
 
+```js
+const customMapper = {
+  skipDefaultMapping: true,
+  mapper: {
+    ... // add custom mappings
+  }
+};
 
+const tracker = createTracker(customMapper);
+```
 
 **2. Copy the segment snippet into the header of your site**
 

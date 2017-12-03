@@ -21,7 +21,7 @@ function emit (type: string, fields: Array, { client }: Object) {
 
 function createTracker (customOptions = {}) {
   const options = {
-    mapper: { ...defaultMapper.mapper, ...customOptions.mapper },
+    mapper: buildMapper(customOptions),
     client: customOptions.client ? () => customOptions.client : defaultClient
   }
 
@@ -36,7 +36,7 @@ function createTracker (customOptions = {}) {
 
 function createMetaReducer (customOptions = {}) {
   const options = {
-    mapper: { ...defaultMapper.mapper, ...customOptions.mapper },
+    mapper: buildMapper(customOptions),
     client: customOptions.client ? () => customOptions.client : defaultClient
   }
 
@@ -152,6 +152,12 @@ function handleSpec (next: Function, action: Object, options: Object) {
   }
 
   return next(action)
+}
+
+function buildMapper (customOptions) {
+  return customOptions.skipDefaultMapping
+    ? { ...customOptions.mapper }
+    : { ...defaultMapper.mapper, ...customOptions.mapper }
 }
 
 export {
