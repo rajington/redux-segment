@@ -1,4 +1,4 @@
-// Type definitions for redux-segment v0.7.2
+// Type definitions for redux-segment
 // Project: https://github.com/rangle/redux-segment
 // Definitions by: Derek Strickland <https://github.com/DerekStrickland>
 // Definitions: https://github.com/DefinitelyTyped/DefinitelyTyped
@@ -9,13 +9,13 @@ declare namespace ReduxSegment {
      *  compose(applyMiddleware(thunkMiddleware, loggerMiddleware, trackerMiddleware);
      */
     function createTracker():any;
-    
+
     /**
      * Convenience string enum for configuring segment event types. Consolidates magic strings.
      */
     interface IEventTypes {
         /**
-         * The identify call ties a customer and their actions to a recognizable ID and traits like their email, name, etc. 
+         * The identify call ties a customer and their actions to a recognizable ID and traits like their email, name, etc.
          */
         identify:string;
         /**
@@ -33,11 +33,15 @@ declare namespace ReduxSegment {
         /**
          * The group API call is how you associate an individual user with a group—be it a company, organization, account, project, team or whatever other crazy name you came up with for the same concept!
          */
-        group:string
+        group:string;
+        /**
+         * Calling reset will reset the id, including anonymousId, and clear traits for the currently identified user and group.
+         */
+        reset:string;
     }
-    
+
     const EventTypes:IEventTypes;
-    
+
     /**
      * A map of attributes about the user. These are completely at your discretion but common ones include email and name. If you don't provide a userId, the traits will be attributed to the currently identified users (whether anonymous or not).
      */
@@ -59,14 +63,14 @@ declare namespace ReduxSegment {
         username?:string;
         website?:string;
     }
-    
+
     interface IIdentifyEventPayload {
         /**
          * The database ID of the user. For anonymous visitors, an anonymousId will be automatically generated so this field can be omitted.
          */
         userId?:string;
         /**
-         * A map of attributes about the user. 
+         * A map of attributes about the user.
          */
         traits?:IUserTraits;
         /**
@@ -74,7 +78,7 @@ declare namespace ReduxSegment {
          */
         options?:any;
     }
-    
+
     interface IPageEventProperties {
         url?:string;
         title?:string;
@@ -83,10 +87,10 @@ declare namespace ReduxSegment {
         name?:string;
         search?:string
     }
-    
+
     interface IPageEventPayload {
         /**
-         * The name of the page (e.g. 'Home'). 
+         * The name of the page (e.g. 'Home').
          */
         name:string;
         /**
@@ -102,32 +106,32 @@ declare namespace ReduxSegment {
          */
         options?:any
     }
-    
+
     /**
      * A map of event properties. Properties are extra pieces of information tied to the event being tracked. They can help provide additional context later when analyzing the events, and in doing so, provide a more complete picture of what your users are doing.
      */
     interface ITrackEventProperties {
-        
+
     }
-    
+
     interface IMonetaryTrackEventProperties extends ITrackEventProperties {
         name?:string;
         revenue?:number;
         currency?:string;
         value?:number;
     }
-    
+
     interface IExperimentTrackEventProperties extends ITrackEventProperties {
         experiment_id:string;
         experiment_name?:string;
         variation_id?:string;
         variation_name?:string;
     }
-    
+
     interface IViewedProductCategoryEventProperties extends ITrackEventProperties {
         category:string;
     }
-    
+
     interface IViewedProductEventProperties extends ITrackEventProperties {
         id?:string;
         sku?:string;
@@ -135,7 +139,7 @@ declare namespace ReduxSegment {
         price?:string;
         category?:string;
     }
-    
+
     interface IAddedOrRemovedProductEventProperties extends ITrackEventProperties {
         id?:string;
         sku?:string;
@@ -144,7 +148,7 @@ declare namespace ReduxSegment {
         quantity?:string;
         category?:string;
     }
-    
+
     interface ICompletedOrderEventProperties extends ITrackEventProperties {
         orderId?:string;
         total?:number;
@@ -156,9 +160,9 @@ declare namespace ReduxSegment {
         currency?:string;
         products?:Array<any>
     }
-    
-    //TODO: Handle TrackEvents magic strings. 
-    
+
+    //TODO: Handle TrackEvents magic strings.
+
     interface ITrackEventPayload {
         /**
          * The name of the event you’re tracking. This field is required but if you don't explicitly provide one, it will be populated by the type value of the action*. It's recommended that you make event names human-readable and (hopefully) instantly recognizable. It's further recommended that * * these names be built from a past-tense verb and a noun (e.g. 'Bought Merchandise', 'Opened Cart', 'Favorited Product', etc...).
@@ -169,7 +173,7 @@ declare namespace ReduxSegment {
          */
         properties: ITrackEventProperties
     }
-    
+
     interface IAliasEventPayload {
         /**
          * The new database ID you want associated with the user.
@@ -184,7 +188,7 @@ declare namespace ReduxSegment {
          */
         options?:any;
     }
-    
+
     /**
      * A map of attributes about the group. These are completely at your discretion but common ones include employees and website.
      */
@@ -201,7 +205,7 @@ declare namespace ReduxSegment {
         phone?:string;
         website?:string;
     }
-    
+
     interface IGroupEventPayload {
         /**
          * The new database ID of the group you want associated with the (identified or anonymous) user.

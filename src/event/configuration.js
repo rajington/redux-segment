@@ -1,7 +1,6 @@
-import EventTypes from './types';
+import EventTypes from './types'
 
-
-const { page } = EventTypes;
+const { page } = EventTypes
 
 const defaultMapper = {
   mapper: {
@@ -10,20 +9,19 @@ const defaultMapper = {
     '@@router/LOCATION_CHANGE': page,
     '@@reduxReactRouter/initRoutes': page,
     '@@reduxReactRouter/routerDidChange': page,
-    '@@reduxReactRouter/replaceRoutes': page,
-  },
-};
+    '@@reduxReactRouter/replaceRoutes': page
+  }
+}
 
 const defaultClient = () => {
   const root = (typeof self === 'object' && self.self === self && self) ||
                (typeof global === 'object' && global.global === global && global) ||
-               this;
+               this
 
-  return root.analytics;
-};
-
+  return root.analytics
+}
 
 export {
   defaultMapper,
-  defaultClient,
-};
+  defaultClient
+}
