@@ -1,27 +1,26 @@
-function getGroupProperties() {
-  return [ 'groupId', 'traits', 'options' ];
+function getGroupProperties () {
+  return [ 'groupId', 'traits', 'options' ]
 }
 
-function validateGroupFields(fields: Object) {
-  if (!fields.groupId) return new Error('missing groupId field for EventTypes.alias');
+function validateGroupFields (fields: Object) {
+  if (!fields.groupId) return new Error('missing groupId field for EventTypes.alias')
 
-  return null;
+  return null
 }
 
-function extractFields(obj: Object, keys: Array) {
-  return keys.map(key => key === 'traits' ? obj[key] || {} : obj[key]);
+function extractFields (obj: Object, keys: Array) {
+  return keys.map(key => key === 'traits' ? obj[key] || {} : obj[key])
 }
 
-function extractGroupFields(fields: Object) {
-  const props = getGroupProperties(fields);
+function extractGroupFields (fields: Object) {
+  const props = getGroupProperties(fields)
 
-  const err = validateGroupFields(fields);
-  if (err) return err;
+  const err = validateGroupFields(fields)
+  if (err) return err
 
-  return extractFields(fields, props);
+  return extractFields(fields, props)
 }
-
 
 export {
-  extractGroupFields,
-};
+  extractGroupFields
+}

@@ -1,29 +1,28 @@
-function getAliasProperties(fields: Object) {
-  if (!fields.previousId) return [ 'userId', 'options' ];
+function getAliasProperties (fields: Object) {
+  if (!fields.previousId) return [ 'userId', 'options' ]
 
-  return [ 'userId', 'previousId', 'options' ];
+  return [ 'userId', 'previousId', 'options' ]
 }
 
-function validateAliasFields(fields: Object) {
-  if (!fields.userId) return new Error('missing userId field for EventTypes.alias');
+function validateAliasFields (fields: Object) {
+  if (!fields.userId) return new Error('missing userId field for EventTypes.alias')
 
-  return null;
+  return null
 }
 
-function extractFields(obj: Object, keys: Array) {
-  return keys.map(key => obj[key]);
+function extractFields (obj: Object, keys: Array) {
+  return keys.map(key => obj[key])
 }
 
-function extractAliasFields(fields: Object) {
-  const props = getAliasProperties(fields);
+function extractAliasFields (fields: Object) {
+  const props = getAliasProperties(fields)
 
-  const err = validateAliasFields(fields);
-  if (err) return err;
+  const err = validateAliasFields(fields)
+  if (err) return err
 
-  return extractFields(fields, props);
+  return extractFields(fields, props)
 }
-
 
 export {
-  extractAliasFields,
-};
+  extractAliasFields
+}

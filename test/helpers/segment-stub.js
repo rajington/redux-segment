@@ -5,13 +5,12 @@
  * prefixed by the `method` name.
  */
 const stubMethod = (stub: Array, method: string) => (...args) => {
-  args.unshift(method);
+  args.unshift(method)
 
-  stub.push(args);
+  stub.push(args)
 
-  return stub;
-};
-
+  return stub
+}
 
 /**
  * Return an Analytics.js stub
@@ -19,7 +18,7 @@ const stubMethod = (stub: Array, method: string) => (...args) => {
  * Heavily influenced by the stub created during the Analytics.js snippet's
  * initialization before the actual Analytics.js script, itself, is loaded.
  */
-export default function createAnalyticsStub() {
+export default function createAnalyticsStub () {
   // Based on library reference (https://segment.com/docs/libraries/analytics.js/).
   const methods = [
     'trackSubmit',
@@ -36,12 +35,12 @@ export default function createAnalyticsStub() {
     'page',
     'once',
     'off',
-    'on',
-  ];
+    'on'
+  ]
 
   return methods.reduce((stub, method) => {
-    stub[method] = stubMethod(stub, method);
+    stub[method] = stubMethod(stub, method)
 
-    return stub;
-  }, []);
+    return stub
+  }, [])
 }

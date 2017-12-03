@@ -60,7 +60,7 @@ build: redux-segment.js
 #
 
 lint: node_modules
-	@$(ESLINT) $(SRC) $(TESTS)
+	@npm run lint
 
 test: node_modules
 	@$(BABEL-TAPE-RUNNER) -r 'test/helpers/test-setup.js' $(TESTS)

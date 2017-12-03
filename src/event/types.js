@@ -4,8 +4,7 @@ const EventTypes = {
   track: 'track',
   alias: 'alias',
   group: 'group',
-  reset: 'reset',
-};
+  reset: 'reset'
+}
 
-
-export default EventTypes;
+export default EventTypes
