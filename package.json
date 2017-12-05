@@ -3,6 +3,7 @@
   "version": "1.6.2",
   "description": "Segment.io analytics integration for redux.",
   "main": "dist/index.js",
+  "types": "typings/redux-segment.d.ts",
   "scripts": {
     "prepublish": "make build && npm run build",
     "lint": "standard | snazzy",
